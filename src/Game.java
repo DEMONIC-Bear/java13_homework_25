@@ -5,7 +5,7 @@ public class Game {
     private static int gameLevel = 0;
     private Computer computer = new Computer(gameLevel);
     private User userData = new User(gameLevel);
-    private static int count = 5;
+    private static int count = 4;
     private static int totalGame = 0;
     private static int draw = 0;
     private static int compCount = 0;
@@ -14,6 +14,8 @@ public class Game {
     private static int userDefeat = 0;
 
     public void gameRule() {
+        System.out.println("------------ Start game -------------");
+        count = getGameCount();
         getGameLevel();
         computer = new Computer(gameLevel);
         userData = new User(gameLevel);
@@ -32,10 +34,46 @@ public class Game {
         printInfo();
     }
 
+    public static int getGameCount() {
+        boolean check = true;
+        int gameCountLocale = 0;
+        while (check) {
+            try {
+                System.out.print("How many times do you want to play...? ");
+                gameCountLocale = new Scanner(System.in).nextInt();
+                if(gameCountLocale < 1 || gameCountLocale > 100) {
+                    throw new RuntimeException();
+                } else {
+                    check = false;
+                    return gameCountLocale;
+                }
+            } catch (Exception e) {
+                System.out.println("You entered an invalid value");
+                check = true;
+            }
+        }
+        return getGameCount();
+    }
+
     public static int getGameLevel() {
-        System.out.println("Select game difficulty:\n" +
-                "[1] - Easy | [2] - Hard");
-        return gameLevel = new Scanner(System.in).nextInt();
+        boolean check = true;
+        while (check) {
+            try {
+                System.out.println("Select game mode:\n" +
+                        "[1] - Easy | [2] - Hard");
+                gameLevel = new Scanner(System.in).nextInt();
+                if (gameLevel < 1 || gameLevel > 2) {
+                    throw new RuntimeException();
+                } else {
+                    check = false;
+                    return gameLevel;
+                }
+            } catch (Exception e) {
+                System.out.println("There are only two modes");
+                check = true;
+            }
+        }
+        return getGameLevel();
     }
 
     public static void checkingOptions(String user, String comp) {
@@ -71,24 +109,25 @@ public class Game {
 
     public static void printInfo() {
         double compCountDefinition = compCount;
-        double totalGameDefinition = totalGame;
-        double compWinRate = (compCountDefinition / totalGameDefinition) * 100;
         double userCountDefinition = userCount;
-        double userWinRate = (userCountDefinition / totalGameDefinition) * 100;
+        double totalGameDefinition = totalGame;
+        double drawDefinition = draw;
+        double compWinRate = (((drawDefinition / 2) + compCountDefinition) / totalGameDefinition) * 100;
+        double userWinRate = (((drawDefinition / 2) + userCountDefinition) / totalGameDefinition) * 100;
 
         if (userCount > compCount) {
             System.out.println("YOU WIN! CONGRATULATIONS");
             System.out.println("+------------------------------------------------------------+");
-            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", "Victory", "Defeat", "Draw", "Total games", "Win rate");
-            System.out.println("|----------+----------+------------+-------------------------+");
-            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", userCount, userDefeat, draw, totalGame, userWinRate + "%");
+            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", "Victories", "Defeats", "Draw", "Total games", "Win rate");
+            System.out.println("|----------+----------+----------+---------------------------+");
+            System.out.printf("| %-9s | %-8s | %-8s | %-12s | %-6s |\n", userCount, userDefeat, draw, totalGame, userWinRate + "%     ");
             System.out.println("+------------------------------------------------------------+");
         } else if (compCount > userCount) {
-            System.out.println("Computer WIN! YOU LOSE");
+            System.out.println("COMPUTER WIN! YOU LOSE");
             System.out.println("+------------------------------------------------------------+");
-            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", "Victory", "Defeat", "Draw", "Total games", "Win rate");
-            System.out.println("|----------+----------+------------+-------------------------+");
-            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", compCount, compDefeat, draw, totalGame, compWinRate + "%");
+            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", "Victories", "Defeats", "Draw", "Total games", "Win rate");
+            System.out.println("|-----------+----------+----------+--------------------------+");
+            System.out.printf("| %-9s | %-8s | %-8s | %-12s | %-6s |\n", compCount, compDefeat, draw, totalGame, compWinRate + "%     ");
             System.out.println("+------------------------------------------------------------+");
         } else {
             System.out.println("This game is a DRAW!");
