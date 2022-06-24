@@ -1,4 +1,3 @@
-import java.util.Arrays;
 import java.util.Objects;
 import java.util.Random;
 import java.util.Scanner;
@@ -19,40 +18,114 @@ public class Game {
             String user = returnUserChoose().toString();
 
             if (Objects.equals(comp, "ROCK")) {
-                System.out.println("Computer chose > Rock");
+                System.out.printf("%-16s - %-12s\n", "Computer chose", "ROCK");
+                System.out.println("=======================================================");
             } else if (Objects.equals(comp, "PAPER")) {
-                System.out.println("Computer chose > Paper");
-            } else {
-                System.out.println("Computer chose > Scissors");
+                System.out.printf("%-16s - %-12s\n", "Computer chose", "PAPER");
+                System.out.println("=======================================================");
+            } else if (Objects.equals(comp,"SCISSORS")){
+                System.out.printf("%-16s - %-12s\n", "Computer chose", "SCISSORS");
+                System.out.println("=======================================================");
+            } else if(Objects.equals(comp,"LIZARD")) {
+                System.out.printf("%-16s - %-12s\n", "Computer chose", "LIZARD");
+                System.out.println("=======================================================");
+            }else if(Objects.equals(comp,"SPOCK")) {
+                System.out.printf("%-16s - %-12s\n", "Computer chose", "SPOCK");
+                System.out.println("=======================================================");
             }
 
+            checkingOptions(user, comp);
 
-            if (Objects.equals(user, "ROCK") || Objects.equals(comp, "ROCK") &&
-                    Objects.equals(user, "PAPER") && Objects.equals(comp, "PAPER") &&
-                    Objects.equals(user, "SCISSORS") || Objects.equals(comp, "SCISSORS")) {
-                draw++;
-            } else if (Objects.equals(user, "ROCK") || Objects.equals(comp, "PAPER")) {
-                compCount++;
-                userDefeat++;
-            } else if (Objects.equals(user, "ROCK") || Objects.equals(comp, "SCISSORS")) {
-                userCount++;
-                compDefeat++;
-            } else if (Objects.equals(user, "PAPER") || Objects.equals(comp, "ROCK")) {
-                userCount++;
-                compDefeat++;
-            } else if (Objects.equals(user, "PAPER") || Objects.equals(comp, "SCISSORS")) {
-                compCount++;
-                userDefeat++;
-            } else if (Objects.equals(user, "SCISSORS") || Objects.equals(comp, "ROCK")) {
-                compCount++;
-                userDefeat++;
-            } else if (Objects.equals(user, "SCISSORS") || Objects.equals(comp, "PAPER")) {
-                userCount++;
-                compDefeat++;
-            }
-            count--;
+
             totalGame++;
+            count--;
         }
+        printInfo();
+
+    }
+
+    public static Type returnCompChoose() {
+        Type[] types = Type.values();
+        Random random = new Random();
+        int rnd = random.nextInt(types.length);
+        return types[rnd];
+    }
+
+    public static Type returnUserChoose() {
+        System.out.print("Enter the number of the selected option:\n" +
+                "[1] - ROCK | [2] - PAPER | [3] - SCISSORS | [4] - LIZARD | [5] - SPOCK --> ");
+        int userChooseNum = new Scanner(System.in).nextInt();
+        if (userChooseNum == 1) {
+            System.out.println("-------------------------------------------------------");
+            System.out.printf("%-16s - %-12s\n", "You chose", "ROCK");
+            return Type.ROCK;
+        } else if (userChooseNum == 2) {
+            System.out.println("-------------------------------------------------------");
+            System.out.printf("%-16s - %-12s\n", "You chose", "PAPER");
+            return Type.PAPER;
+        } else if (userChooseNum == 3){
+            System.out.println("-------------------------------------------------------");
+            System.out.printf("%-16s - %-12s\n", "You chose", "SCISSORS");
+            return Type.SCISSORS;
+        }else if (userChooseNum == 4){
+            System.out.println("-------------------------------------------------------");
+            System.out.printf("%-16s - %-12s\n", "You chose", "LIZARD");
+            return Type.LIZARD;
+        }else {
+            System.out.println("-------------------------------------------------------");
+            System.out.printf("%-16s - %-12s\n", "You chose", "SPOCK");
+            return Type.SPOCK;
+        }
+    }
+
+    public static void checkingOptions(String user, String comp) {
+
+        if (Objects.equals(user, comp)) {
+            draw++;
+        } else if (Objects.equals(user, "ROCK") || Objects.equals(comp, "LIZARD") &&
+                Objects.equals(user, "ROCK") || Objects.equals(comp, "SCISSORS")) {
+            userCount++;
+            compDefeat++;
+        } else if (Objects.equals(user, "PAPER") || Objects.equals(comp, "ROCK") &&
+        Objects.equals(user,"PAPER") || Objects.equals(comp,"SPOCK")) {
+            userCount++;
+            compDefeat++;
+        } else if (Objects.equals(user, "SCISSORS") || Objects.equals(comp, "PAPER") &&
+        Objects.equals(user,"SCISSORS") || Objects.equals(comp,"LIZARD")) {
+            userCount++;
+            compDefeat++;
+        } else if (Objects.equals(user, "LIZARD") || Objects.equals(comp, "SPOCK") &&
+        Objects.equals(user,"LIZARD") || Objects.equals(comp,"PAPER")) {
+            userCount++;
+            compDefeat++;
+        } else if (Objects.equals(user, "SPOCK") || Objects.equals(comp, "SCISSORS") &&
+        Objects.equals(user,"SPOCK") || Objects.equals(comp,"ROCK")) {
+            userCount++;
+            compDefeat++;
+        } else if (Objects.equals(comp, "ROCK") || Objects.equals(user, "LIZARD") &&
+        Objects.equals(comp,"ROCK") || Objects.equals(user,"SCISSORS")) {
+            compCount++;
+            userDefeat++;
+        }else if (Objects.equals(comp, "PAPER") || Objects.equals(user, "ROCK") &&
+        Objects.equals(comp,"PAPER") || Objects.equals(user,"SPOCK")) {
+            compCount++;
+            userDefeat++;
+        }else if (Objects.equals(comp, "SCISSORS") || Objects.equals(user, "PAPER") &&
+        Objects.equals(comp,"SCISSORS") || Objects.equals(user,"LIZARD")) {
+            compCount++;
+            userDefeat++;
+        }else if (Objects.equals(comp, "LIZARD") || Objects.equals(user, "SPOCK") &&
+        Objects.equals(comp,"LIZARD") || Objects.equals(user,"PAPER")) {
+            compCount++;
+            userDefeat++;
+        }else if (Objects.equals(comp, "SPOCK") || Objects.equals(user, "SCISSORS") &&
+        Objects.equals(comp,"SPOCK") || Objects.equals(user,"ROCK")) {
+            compCount++;
+            userDefeat++;
+        }
+    }
+
+    public static void printInfo() {
         double compCountDefinition = compCount;
         double totalGameDefinition = totalGame;
         double compWinRate = (compCountDefinition / totalGameDefinition) * 100;
@@ -60,48 +133,27 @@ public class Game {
         double userWinRate = (userCountDefinition / totalGameDefinition) * 100;
 
         if (userCount > compCount) {
-            System.out.println("YOU WIN!");
-            System.out.printf("%-8s | %-8s | %-8s | %-12s | %-14s\n", "Victory", "Defeat", "Draw", "Total games", "Win rate");
-            System.out.printf("%-8s | %-8s | %-8s | %-12s | %-14s\n", userCount, userDefeat, draw, totalGame, userWinRate + "%");
+            System.out.println("YOU WIN! CONGRATULATIONS");
+            System.out.println("+------------------------------------------------------------+");
+            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", "Victory", "Defeat", "Draw", "Total games", "Win rate");
+            System.out.println("|----------+----------+------------+-------------------------+");
+            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", userCount, userDefeat, draw, totalGame, userWinRate + "%");
+            System.out.println("+------------------------------------------------------------+");
         } else if (compCount > userCount) {
-            System.out.println("Computer WIN!");
-            System.out.printf("%-8s | %-8s | %-8s | %-12s | %-14s\n", "Victory", "Defeat", "Draw", "Total games", "Win rate");
-            System.out.printf("%-8s | %-8s | %-8s | %-12s | %-14s\n", compCount, compDefeat, draw, totalGame, compWinRate + "%");
+            System.out.println("Computer WIN! YOU LOSE");
+            System.out.println("+------------------------------------------------------------+");
+            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", "Victory", "Defeat", "Draw", "Total games", "Win rate");
+            System.out.println("|----------+----------+------------+-------------------------+");
+            System.out.printf("| %-8s | %-8s | %-8s | %-12s | %-10s |\n", compCount, compDefeat, draw, totalGame, compWinRate + "%");
+            System.out.println("+------------------------------------------------------------+");
         } else {
-            System.out.println("DRAW!");
-            System.out.printf("%-8s | %-8s | %-8s | %-12s \n", "User Win", "Comp WIn", "Draw", "Total games");
-            System.out.printf("%-8s | %-8s | %-8s | %-12s \n", userCount, compCount, draw, totalGame);
+            System.out.println("This game is a DRAW!");
+            System.out.println("+-----------------------------------------------+");
+            System.out.printf("| %-8s | %-8s | %-8s | %-12s |\n", "User Win", "Comp WIn", "Draw", "Total games");
+            System.out.println("|----------+----------+----------+--------------+");
+            System.out.printf("| %-8s | %-8s | %-8s | %-12s |\n", userCount, compCount, draw, totalGame);
+            System.out.println("+-----------------------------------------------+");
         }
     }
 
-    public static Type returnCompChoose() {
-        int rnd = new Random().nextInt(3) + 1;
-        if (rnd == 1) {
-            return Type.ROCK;
-        } else if (rnd == 2) {
-            return Type.PAPER;
-        } else {
-            return Type.SCISSORS;
-        }
-    }
-
-    public static Type returnUserChoose() {
-        System.out.println("""
-                Enter the number of the selected option:
-                 1 - Rock
-                 2 - Paper
-                 3 - Scissors""");
-        System.out.println("=======================================================");
-        int userChooseNum = new Scanner(System.in).nextInt();
-        if (userChooseNum == 1) {
-            System.out.println("You chose > Rock");
-            return Type.ROCK;
-        } else if (userChooseNum == 2) {
-            System.out.println("You chose > Paper");
-            return Type.PAPER;
-        } else {
-            System.out.println("You chose > Scissors");
-            return Type.SCISSORS;
-        }
-    }
 }

@@ -1,5 +1,7 @@
 public enum Type {
     ROCK,
     PAPER,
-    SCISSORS
+    SCISSORS,
+    LIZARD,
+    SPOCK
 }
