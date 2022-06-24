@@ -1,8 +1,10 @@
 import java.util.Objects;
+import java.util.Scanner;
 
 public class Game {
-    private Computer computer = new Computer();
-    private User userData = new User();
+    private static int gameLevel = 0;
+    private Computer computer = new Computer(gameLevel);
+    private User userData = new User(gameLevel);
     private static int count = 5;
     private static int totalGame = 0;
     private static int draw = 0;
@@ -12,6 +14,9 @@ public class Game {
     private static int userDefeat = 0;
 
     public void gameRule() {
+        getGameLevel();
+        computer = new Computer(gameLevel);
+        userData = new User(gameLevel);
 
         while (count != 0) {
             String user = userData.getTypeFromUser().name();
@@ -22,26 +27,46 @@ public class Game {
             totalGame++;
             count--;
         }
+
+
         printInfo();
     }
 
-    public static void checkingOptions(String user, String comp) {
+    public static int getGameLevel() {
+        System.out.println("Select game difficulty:\n" +
+                "[1] - Easy | [2] - Hard");
+        return gameLevel = new Scanner(System.in).nextInt();
+    }
 
-        if (Objects.equals(user, comp)) {
-            draw++;
-        } else if (
-                (Objects.equals(user, Type.ROCK.name()) && (Objects.equals(comp, Type.SCISSORS.name()) || Objects.equals(comp, Type.LIZARD.name()))) ||
-                        (Objects.equals(user, Type.PAPER.name()) && (Objects.equals(comp, Type.ROCK.name()) || Objects.equals(comp, Type.SPOCK.name()))) ||
-                        (Objects.equals(user, Type.SCISSORS.name()) && (Objects.equals(comp, Type.PAPER.name()) || Objects.equals(comp, Type.LIZARD.name()))) ||
-                        (Objects.equals(user, Type.LIZARD.name()) && (Objects.equals(comp, Type.PAPER.name()) || Objects.equals(comp, Type.SPOCK.name()))) ||
-                        (Objects.equals(user, Type.SPOCK.name()) && (Objects.equals(comp, Type.ROCK.name()) || Objects.equals(comp, Type.SCISSORS.name())))
-        ) {
-            userCount++;
-            compDefeat++;
+    public static void checkingOptions(String user, String comp) {
+        if (totalGame == 1) {
+            if (Objects.equals(user, comp)) {
+                draw++;
+            } else if ((Objects.equals(user, Type.ROCK.name()) && Objects.equals(comp, Type.SCISSORS.name()))) {
+                userCount++;
+                compDefeat++;
+            } else {
+                compCount++;
+                userDefeat++;
+            }
         } else {
-            compCount++;
-            userDefeat++;
+            if (Objects.equals(user, comp)) {
+                draw++;
+            } else if (
+                    (Objects.equals(user, Type.ROCK.name()) && (Objects.equals(comp, Type.SCISSORS.name()) || Objects.equals(comp, Type.LIZARD.name()))) ||
+                            (Objects.equals(user, Type.PAPER.name()) && (Objects.equals(comp, Type.ROCK.name()) || Objects.equals(comp, Type.SPOCK.name()))) ||
+                            (Objects.equals(user, Type.SCISSORS.name()) && (Objects.equals(comp, Type.PAPER.name()) || Objects.equals(comp, Type.LIZARD.name()))) ||
+                            (Objects.equals(user, Type.LIZARD.name()) && (Objects.equals(comp, Type.PAPER.name()) || Objects.equals(comp, Type.SPOCK.name()))) ||
+                            (Objects.equals(user, Type.SPOCK.name()) && (Objects.equals(comp, Type.ROCK.name()) || Objects.equals(comp, Type.SCISSORS.name())))
+            ) {
+                userCount++;
+                compDefeat++;
+            } else {
+                compCount++;
+                userDefeat++;
+            }
         }
+
     }
 
     public static void printInfo() {
